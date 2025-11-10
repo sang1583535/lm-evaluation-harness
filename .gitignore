@@ -46,5 +46,8 @@ examples/wandb/
 # PyInstaller
 *.spec
 
-#uv
+# uv
 uv.lock
+
+# my
+*.o*
