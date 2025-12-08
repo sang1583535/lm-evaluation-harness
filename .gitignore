@@ -51,3 +51,5 @@ uv.lock
 
 # my
 *.o*
+
+results/
