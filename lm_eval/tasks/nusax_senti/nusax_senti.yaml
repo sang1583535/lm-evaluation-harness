@@ -1,7 +1,11 @@
 task: nusax_senti_ind
 
-dataset_path: indonlp/NusaX-senti
-dataset_name: ind          # language subset: ace, ban, bbc, bjn, bug, eng, ind, ...
+# Use custom dataset loader to bypass script-based loader restrictions
+custom_dataset: !function utils.custom_dataset_loader
+
+# Language for the dataset
+dataset_kwargs:
+  language: ind
 
 # use the test split for evaluation
 test_split: test

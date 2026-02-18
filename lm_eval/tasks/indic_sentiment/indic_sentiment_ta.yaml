@@ -1,10 +1,11 @@
 task: indic_sentiment_ta
 
-dataset_path: ai4bharat/IndicSentiment
-dataset_name: translation-ta   # Tamil
+# Use custom dataset loader to bypass script-based loader restrictions
+custom_dataset: !function utils.custom_dataset_loader
 
+# Language for the dataset (Tamil)
 dataset_kwargs:
-  trust_remote_code: true
+  language: ta
 
 # splits
 validation_split: validation

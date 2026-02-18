@@ -1,6 +1,8 @@
 # lm_eval/tasks/indic_sentiment_ta/utils.py
 from typing import Dict
 import datasets
+import json
+import urllib.request
 
 LABELS = ["negative", "positive"]  # Tamil: 2-class only
 
@@ -44,3 +46,47 @@ def process_docs(dataset: datasets.Dataset) -> datasets.Dataset:
     dataset = dataset.map(_proc)
 
     return dataset
+
+
+def custom_dataset_loader(language: str = "ta", **kwargs) -> datasets.DatasetDict:
+    """
+    Load IndicSentiment dataset directly from JSON files to bypass script-based loader.
+    
+    Args:
+        language: Language code (default: 'ta' for Tamil)
+    
+    Returns:
+        datasets.DatasetDict with validation and test splits
+    """
+    base_url = "https://huggingface.co/datasets/ai4bharat/IndicSentiment/resolve/main/data"
+    
+    dataset_dict = {}
+    splits = ["validation", "test"]
+    
+    for split in splits:
+        json_url = f"{base_url}/{split}/{language}.json"
+        
+        try:
+            with urllib.request.urlopen(json_url) as response:
+                content = response.read().decode('utf-8').strip()
+                
+            # Handle both JSONL (newline-delimited) and regular JSON formats
+            if content.startswith('['):
+                # Regular JSON array
+                data = json.loads(content)
+            else:
+                # JSONL format (one JSON object per line)
+                lines = content.split('\n')
+                data = [json.loads(line) for line in lines if line.strip()]
+            
+            # Convert list of dicts to dataset
+            if data:
+                dataset_dict[split] = datasets.Dataset.from_dict({
+                    k: [item.get(k) for item in data]
+                    for k in data[0].keys()
+                })
+        except Exception as e:
+            print(f"Warning: Could not load {split} split for {language}: {e}")
+            continue
+    
+    return datasets.DatasetDict(dataset_dict)
