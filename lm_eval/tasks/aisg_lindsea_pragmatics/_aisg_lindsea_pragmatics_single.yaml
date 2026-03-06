@@ -1,0 +1,10 @@
+group: aisg_lindsea_pragmatics_single
+task:
+  - aisg_lindsea_pragmatics_single_id
+  - aisg_lindsea_pragmatics_single_ta
+aggregate_metric_list:
+  - metric: acc
+    aggregation: mean
+    weight_by_size: true
+metadata:
+  version: 1.1
