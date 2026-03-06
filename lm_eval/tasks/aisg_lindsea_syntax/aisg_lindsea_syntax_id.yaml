@@ -1,0 +1,5 @@
+include: aisg_lindsea_syntax_common_yaml
+task: aisg_lindsea_syntax_id
+dataset_name: id
+doc_to_text: "{{prompts[0].sentence_pair}}\n\nKalimat mana yang lebih mungkin?"
+doc_to_choice: ["A", "B"]

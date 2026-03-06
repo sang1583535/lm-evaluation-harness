@@ -1,0 +1,5 @@
+include: aisg_lindsea_syntax_common_yaml
+task: aisg_lindsea_syntax_ta
+dataset_name: ta
+doc_to_text: "{{prompts[0].sentence_pair}}\n\nஎந்த வாக்கியம் மிகவும் சாத்தியமானது?"
+doc_to_choice: ["A", "B"]
