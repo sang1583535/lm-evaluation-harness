@@ -1,0 +1,6 @@
+include: aisg_nlu_metaphor_common_yaml
+task: aisg_nlu_metaphor_id
+dataset_name: id
+doc_to_text: "{{prompts[0].phrase}}"
+doc_to_choice: "{{[prompts[0].choice1, prompts[0].choice2]}}"
+doc_to_target: !function utils.metaphor_label_to_index

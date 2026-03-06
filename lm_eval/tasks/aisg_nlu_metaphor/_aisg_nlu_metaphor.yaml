@@ -1,0 +1,10 @@
+group: aisg_nlu_metaphor
+task:
+  - aisg_nlu_metaphor_id
+  - aisg_nlu_metaphor_ta
+aggregate_metric_list:
+  - metric: acc
+    aggregation: mean
+    weight_by_size: true
+metadata:
+  version: 1.0
