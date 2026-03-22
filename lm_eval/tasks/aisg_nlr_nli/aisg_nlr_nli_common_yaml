@@ -1,0 +1,17 @@
+# This file will be included in the generated language-specific task configs.
+# It doesn't have a yaml file extension as it is not meant to be imported directly
+# by the harness.
+task: null
+dataset_path: aisingapore/NLR-NLI
+dataset_name: null
+output_type: multiple_choice
+test_split: eval
+doc_to_text: null
+doc_to_choice: null
+doc_to_target: !function utils.doc_to_target
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 1.0

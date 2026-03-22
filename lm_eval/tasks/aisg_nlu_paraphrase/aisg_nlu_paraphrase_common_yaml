@@ -1,0 +1,24 @@
+# Common configuration for paraphrase identification task
+# This file is included in language-specific config files
+
+# Output format: multiple choice
+output_type: multiple_choice
+
+# Use the test split from the dataset
+test_split: test
+
+# Document to text: concatenate both sentences
+doc_to_text: "{{prompts[0].sentence1}} {{prompts[0].sentence2}}"
+
+# Map document label to choice index
+doc_to_target: !function utils.doc_to_target
+
+# Metrics to compute
+metric_list:
+  - metric: acc
+    aggregation: mean
+    weight_by_size: true
+
+# Metadata
+metadata:
+  version: 1.0

@@ -1,0 +1,15 @@
+group: aisg_nlr_nli
+task:
+  - aisg_nlr_nli_id
+  - aisg_nlr_nli_ms
+  - aisg_nlr_nli_my
+  - aisg_nlr_nli_ta
+  - aisg_nlr_nli_th
+  - aisg_nlr_nli_tl
+  - aisg_nlr_nli_vi
+aggregate_metric_list:
+  - metric: acc
+    aggregation: mean
+    weight_by_size: true
+metadata:
+  version: 1.0

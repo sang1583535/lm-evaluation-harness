@@ -1,0 +1,15 @@
+# Group definition for paraphrase identification tasks
+# Uses HuggingFace's built-in json dataset loader (no custom class needed)
+
+group: aisg_nlu_paraphrase
+task:
+  - aisg_nlu_paraphrase_my
+  - aisg_nlu_paraphrase_tl
+
+aggregate_metric_list:
+  - metric: acc
+    aggregation: mean
+    weight_by_size: true
+
+metadata:
+  version: 1.0

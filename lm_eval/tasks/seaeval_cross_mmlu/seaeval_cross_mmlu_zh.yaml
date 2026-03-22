@@ -1,0 +1,16 @@
+task: seaeval_cross_mmlu_zh
+dataset_path: SeaEval/SeaEval_datasets
+dataset_name: cross_mmlu
+test_split: test
+output_type: multiple_choice
+
+doc_to_text: !function utils.doc_to_text_zh
+doc_to_choice: !function utils.doc_to_choice_zh
+doc_to_target: !function utils.doc_to_target_zh
+
+metric_list:
+  - metric: acc
+  - metric: acc_norm
+
+metadata:
+  version: 1.0

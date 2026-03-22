@@ -18,7 +18,11 @@ doc_to_text: |
 
   "{{ texts }}"
 
+<<<<<<< HEAD
   อารมณ์ของข้อความนี้คืออะไร? (pos, neu, neg หรือ q)
+=======
+  อารมณ์ของข้อความนี้คืออะไร? (pos, neu, neg)
+>>>>>>> e0265fe0d085f2677eb81513c3176e3f2b3bb490
 
 # 4-way label space: pos, neu, neg, q
 # In the HF dataset, `category` is a ClassLabel, i.e. integer 0..3 with

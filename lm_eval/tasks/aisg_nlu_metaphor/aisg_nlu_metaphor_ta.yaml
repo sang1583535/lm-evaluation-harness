@@ -1,0 +1,6 @@
+include: aisg_nlu_metaphor_common_yaml
+task: aisg_nlu_metaphor_ta
+dataset_name: ta
+doc_to_text: "{{prompts[0].metaphor}} {{prompts[0].explanation}}"
+doc_to_choice: ["உண்மை", "பொய்"]
+doc_to_target: !function utils.metaphor_truth_to_index

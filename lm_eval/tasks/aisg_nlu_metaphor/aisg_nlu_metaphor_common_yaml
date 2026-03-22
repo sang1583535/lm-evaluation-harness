@@ -1,0 +1,8 @@
+dataset_path: aisingapore/NLU-Metaphor
+dataset_name: null
+output_type: multiple_choice
+test_split: eval
+metric_list:
+  - metric: acc
+    aggregation: mean
+    weight_by_size: true

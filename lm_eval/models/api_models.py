@@ -542,7 +542,7 @@ class TemplateAPI(TemplateLM):
             return answers
         # If the retries also fail
         except BaseException as e:
-            eval_logger.error(f"Exception:{repr(e)}, {outputs}, retrying.")
+            eval_logger.error(f"Exception:{repr(e)}, {locals().get('outputs', '(no outputs)')}, retrying.")
             raise e
         finally:
             if acquired:
@@ -769,17 +769,24 @@ class TemplateAPI(TemplateLM):
                     ),
                     contexts,
                 ):
-                    if generated_text is not None:
+                    # Always append to res to maintain the correct number of items
+                    # even if generation failed (generated_text is None)
+                    if generated_text is None:
+                        eval_logger.warning(
+                            "API returned null content. Check reasoning_content field or generation limits..."
+                        )
+                        res.append("")
+                    else:
                         res.append(generated_text)
 
-                        # partial caching
-                        if context is not None:
-                            self.cache_hook.add_partial(
-                                "generate_until",
-                                (context, all_gen_kwargs[0]),
-                                generated_text,
-                            )
-                            pbar.update(1)
+                    # partial caching only for successful generations
+                    if generated_text is not None and context is not None:
+                        self.cache_hook.add_partial(
+                            "generate_until",
+                            (context, all_gen_kwargs[0]),
+                            generated_text,
+                        )
+                    pbar.update(1)
         else:
             for chunk in chunked:
                 contexts, all_gen_kwargs, encodings_list = zip(*chunk)
@@ -809,7 +816,15 @@ class TemplateAPI(TemplateLM):
                         )
                     )
                 )
-                res.extend(results)
+                # Convert None values to empty strings to maintain consistency
+                for r in results:
+                    if r is None:
+                        eval_logger.warning(
+                            "API returned null content. Check reasoning_content field or generation limits."
+                        )
+                        res.append("")
+                    else:
+                        res.append(r)
 
         return re_ord.get_original(res)
 
