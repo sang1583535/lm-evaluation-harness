@@ -1,4 +1,0 @@
-include: aisg_lindsea_pragmatics_single_common_yaml
-task: aisg_lindsea_pragmatics_single_ta
-dataset_name: ta_single
-doc_to_choice: ["உண்மை", "பொய்"]
