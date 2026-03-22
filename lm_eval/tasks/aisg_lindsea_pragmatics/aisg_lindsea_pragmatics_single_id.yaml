@@ -1,0 +1,4 @@
+include: aisg_lindsea_pragmatics_single_common_yaml
+task: aisg_lindsea_pragmatics_single_id
+dataset_name: id_single
+doc_to_choice: ["Benar", "Salah"]
