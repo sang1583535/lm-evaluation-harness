@@ -17,6 +17,7 @@ MODELS=(
     # "SeaLLMs/SeaLLMs-v3-7B"
     # "sail/Sailor2-8B"
     # "aisingapore/Llama-SEA-LION-v3.5-8B-R"
+    # "allenai/OLMo-2-1124-7B"
     # "/scratch/e1583535/llm/sail/Sailor2-20B"
     # "aisingapore/Gemma-SEA-LION-v4-27B"
     # "aisingapore/Qwen-SEA-LION-v4-32B-IT"  
@@ -30,48 +31,63 @@ MODELS=(
     # "/scratch/e1583535/llm/openseal-dpo/openseal_dpo_multilingual_sail2s1"
     # "/scratch/e1583535/llm/openseal-dpo/openseal_dpo_sail2s1_seaexams3"
     # "/scratch/e1583535/llm/openseal-dpo/openseal_dpo_sail2s1_seaexams3_cosmos"
-    # "allenai/OLMo-2-0425-1B"
-    # "allenai/OLMo-2-0425-1B-SFT"
-    # "allenai/OLMo-2-0425-1B-DPO"
-    # "allenai/OLMo-2-0425-1B-Instruct"
-    # "allenai/OLMo-2-1124-7B"
-    # "allenai/OLMo-2-1124-7B-Instruct"
-    # "/scratch/e1583535/llm/openseal-sft/openseal-seainstruct"
-    # "allenai/OLMo-2-0325-32B"
-    # "allenai/OLMo-2-0325-32B-Instruct"
-    # "Qwen/Qwen2.5-7B"
-    # "Qwen/Qwen2.5-7B-Instruct"
-    # "Qwen/Qwen2.5-32B"
-    # "Qwen/Qwen2.5-32B-Instruct"
-    # "meta-llama/Llama-3.1-8B"
-    # "meta-llama/Llama-3.1-8B-Instruct"
-    # "meta-llama/Llama-3.1-70B"
-    # "meta-llama/Llama-3.1-70B-Instruct"
-    # "/scratch/e1583535/llm/openseal-sft/openseal-SeaInstruct_stage1"
-    # "/scratch/e1583535/llm/openseal-sft/openseal-SeaInstruct_stage2"
     # "/scratch/e1583535/llm/reproduce-olmo2/olmo2-1b-sft"
-    # "meta-llama/Llama-3.1-8B-Instruct"
-    # "andrewivan123/culfit_sft_only_merged_add_aya"
-    "dragoox/culfit_sft_randomGt_add_aya"
+    # "/scratch/e1583535/llm/reproduce-olmo2/olmo2-1b-sft-1epoch"
+    # "/scratch/e1583535/llm/reproduce-olmo2/olmo2-1b-dpo-1epoch"
+    # "/scratch/e1583535/llm/openseal-sft/openseal-SeaInstruct_stage2"
+    "/scratch/e1583535/llm/openseal-sft/openseal-sailor2-stage1-retrain"
 )
 
 # NOTE: space-separated here (no commas!)
 # TASKS="xnli_en xnli_th xnli_vi xnli_zh xcopa_en xcopa_id xcopa_ta xcopa_th xcopa_vi xcopa_zh xcopa_7b-5shot_id_en xcopa_7b-5shot_ta_en xcopa_7b-5shot_th_en xcopa_7b-5shot_vi_en xcopa_7b-5shot_zh_en xcopa_google_id_en xcopa_google_ta_en xcopa_google_th_en xcopa_google_vi_en xcopa_google_zh_en xnli_7b_5shot_th_en xnli_7b_5shot_vi_en xnli_7b_5shot_zh_en xnli_google_th_en xnli_google_vi_en xnli_google_zh_en paws_en paws_zh"
-# TASKS="xnli_en xnli_th xnli_vi xnli_zh xcopa_en xcopa_id xcopa_ta xcopa_th xcopa_vi xcopa_zh paws_en paws_zh xstorycloze_en xstorycloze_id xstorycloze_my xstorycloze_zh xwinograd_en xwinograd_zh xquad_en xquad_th xquad_vi xquad_zh kalahi_tl copal_id_standard copal_id_colloquial"
-TASKS="xwinograd_en xwinograd_zh xstorycloze_ar xstorycloze_en xstorycloze_es xstorycloze_id xstorycloze_zh xnli_ar xnli_en xnli_es xnli_el xnli_zh xcopa_en xcopa_id xcopa_zh paws_en paws_es paws_ko paws_zh"
+TASKS="xnli_en xnli_th xnli_vi xnli_zh xcopa_en xcopa_id xcopa_ta xcopa_th xcopa_vi xcopa_zh paws_en paws_zh"
+# TASKS="xnli_en xcopa_en paws_en xstorycloze_en xwinograd_en xquad_en"
 
-TYPE="culture_research/xcollection-results-260421"
+TYPE="results-260320"
 BASE_LOG_DIR="/scratch/e1583535/multilingual-llm-project/logs/eval/lm-evaluation-harness/$TYPE"
 
 mkdir -p "$BASE_LOG_DIR"
+
+# Setup environment
+export HF_HOME=/scratch/e1583535/cache
+export HF_DATASETS_CACHE=/scratch/e1583535/cache/datasets
+
+# Activate virtual environment
+if [ -d "/hpctmp/e1583535/virtualenvs/lm-eval" ]; then
+    source /hpctmp/e1583535/virtualenvs/lm-eval/bin/activate
+fi
+
+# Convert space-separated TASKS → comma-separated for lm_eval
+TASKS_CSV=$(echo "$TASKS" | tr ' ' ',')
 
 for MODEL in "${MODELS[@]}"; do
     BASE_NAME=$(basename "$MODEL")
     OUTPUT_PATH="/scratch/e1583535/results/lm_evaluation_harness/${TYPE}/$BASE_NAME"
     mkdir -p "$OUTPUT_PATH"
 
-    qsub -v MODEL="$MODEL",TASKS="$TASKS",OUTPUT_PATH="$OUTPUT_PATH",BASE_LOG_DIR="$BASE_LOG_DIR" mass_lm_eval_run.pbs
+    echo "=========================================="
+    echo "Starting evaluation for model: $MODEL"
+    echo "BASE_NAME: $BASE_NAME"
+    echo "OUTPUT_PATH: $OUTPUT_PATH"
+    echo "Time: $(date)"
+    echo "=========================================="
 
-    echo "Submitted job for model: $MODEL"
-    sleep 2
+    lm_eval --model hf \
+      --model_args "pretrained=$MODEL,parallelize=True" \
+      --tasks "$TASKS_CSV" \
+      --log_samples \
+      --output_path "$OUTPUT_PATH" \
+      --batch_size 16 \
+      2>&1 | tee -a "$BASE_LOG_DIR/stdout.$BASE_NAME.log"
+
+    if [ $? -eq 0 ]; then
+        echo "✓ Successfully completed evaluation for: $MODEL"
+    else
+        echo "✗ Error during evaluation for: $MODEL"
+    fi
+
+    echo "Completed at $(date)"
+    echo ""
 done
+
+echo "All model evaluations complete!"
