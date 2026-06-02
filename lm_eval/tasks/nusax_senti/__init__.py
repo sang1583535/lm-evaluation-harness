@@ -1,0 +1,1 @@
+"""NusaX sentiment classification tasks."""

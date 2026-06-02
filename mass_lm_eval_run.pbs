@@ -4,8 +4,8 @@
 #PBS -k oed
 #PBS -N lm_evaluation_harness_run
 #PBS -q auto
-#PBS -l select=1:ngpus=2
-#PBS -l walltime=56:00:00
+#PBS -l select=1:ngpus=1
+#PBS -l walltime=4:00:00
 
 cd "$PBS_O_WORKDIR"
 
@@ -31,25 +31,36 @@ fi
 # Convert space-separated TASKS → comma-separated for lm_eval
 TASKS_CSV=$(echo "$TASKS" | tr ' ' ',')
 
+# Create log directory
+mkdir -p "$BASE_LOG_DIR"
+
 singularity exec -e \
   --env HF_HOME=/scratch/e1583535/cache \
   --env HF_DATASETS_CACHE=/scratch/e1583535/cache/datasets \
+  --env MODEL="$MODEL" \
+  --env TASKS_CSV="$TASKS_CSV" \
+  --env OUTPUT_PATH="$OUTPUT_PATH" \
+  --env BASE_LOG_DIR="$BASE_LOG_DIR" \
   "$image" bash << EOF > "$BASE_LOG_DIR/stdout.$PBS_JOBID.log" 2> "$BASE_LOG_DIR/stderr.$PBS_JOBID.log"
 
 if [ -d "/hpctmp/e1583535/virtualenvs/lm-eval" ]; then
     source /hpctmp/e1583535/virtualenvs/lm-eval/bin/activate
 fi
 
-echo "Starting evaluating at \$(date)"
-echo "Running on host: \$(hostname)"
+echo "Starting evaluating at $(date)"
+echo "Running on host: $(hostname)"
 echo "GPU info:"
 nvidia-smi --query-gpu=name,memory.total,memory.free --format=csv,noheader,nounits || echo "No GPU detected"
+echo "MODEL: $MODEL"
+echo "TASKS_CSV: $TASKS_CSV"
+echo "OUTPUT_PATH: $OUTPUT_PATH"
 
 lm_eval --model hf \
-  --model_args pretrained=$MODEL,parallelize=True \
-  --tasks $TASKS_CSV \
+  --model_args "pretrained=$MODEL,parallelize=True,trust_remote_code=True" \
+  --tasks "$TASKS_CSV" \
   --log_samples \
-  --output_path $OUTPUT_PATH \
-  --batch_size 16
+  --num_fewshot 5 \
+  --output_path "$OUTPUT_PATH" \
+  --batch_size 32
 
 EOF

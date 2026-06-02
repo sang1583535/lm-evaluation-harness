@@ -1,0 +1,11 @@
+include: _default_template_yaml
+task: nusax_senti_en_bjn
+task_alias: NusaX-Senti Banjarese English Prompt
+dataset_name: bjn
+dataset_kwargs:
+  language: bjn
+tag:
+  - nusax_senti
+  - nusax_senti_en
+  - sentiment
+  - sea_ood

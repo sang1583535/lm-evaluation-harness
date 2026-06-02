@@ -1,0 +1,11 @@
+include: _default_template_yaml
+task: nusax_senti_en_min
+task_alias: NusaX-Senti Minangkabau English Prompt
+dataset_name: min
+dataset_kwargs:
+  language: min
+tag:
+  - nusax_senti
+  - nusax_senti_en
+  - sentiment
+  - sea_ood

@@ -1,0 +1,11 @@
+include: _default_template_yaml
+task: nusax_senti_og_mad
+task_alias: NusaX-Senti Madurese Original Prompt
+dataset_name: mad
+dataset_kwargs:
+  language: mad
+tag:
+  - nusax_senti
+  - nusax_senti_og
+  - sentiment
+  - sea_ood

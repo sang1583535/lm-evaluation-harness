@@ -1,0 +1,11 @@
+include: _default_template_yaml
+task: nusax_senti_og_sun
+task_alias: NusaX-Senti Sundanese Original Prompt
+dataset_name: sun
+dataset_kwargs:
+  language: sun
+tag:
+  - nusax_senti
+  - nusax_senti_og
+  - sentiment
+  - sea_ood

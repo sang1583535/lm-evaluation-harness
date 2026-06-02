@@ -1,0 +1,11 @@
+include: _default_template_yaml
+task: nusax_senti_en_jav
+task_alias: NusaX-Senti Javanese English Prompt
+dataset_name: jav
+dataset_kwargs:
+  language: jav
+tag:
+  - nusax_senti
+  - nusax_senti_en
+  - sentiment
+  - sea_ood

@@ -35,15 +35,23 @@ MODELS=(
     # "/scratch/e1583535/llm/reproduce-olmo2/olmo2-1b-sft-1epoch"
     # "/scratch/e1583535/llm/reproduce-olmo2/olmo2-1b-dpo-1epoch"
     # "/scratch/e1583535/llm/openseal-sft/openseal-SeaInstruct_stage2"
-    "/scratch/e1583535/llm/openseal-sft/openseal-sailor2-stage1-retrain"
+    # "/scratch/e1583535/llm/openseal-sft/openseal-sailor2-stage1-retrain"
+    # "/scratch/e1583535/llm/reproduce-olmo2/olmo2-7b-sft-1epoch"
+    # "/scratch/e1583535/llm/reproduce-olmo2/olmo2-7b-dpo-sft1epoch-fromTwinkle"
+    # "/scratch/e1583535/llm/reproduce-olmo2/olmo2-7b-rlvr-gsm-grpo-fast"
+    # "swiss-ai/Apertus-8B-2509"
+    # "/scratch/e1583535/llm/openseal-sft/openseal-sft-quality_0.8_aya6lang_mcq"
+    "/scratch/e1583535/llm/openseal-sft/openseal-sft-random_sailor_seainstruct_aya_mcq"
+    # "aisingapore/Llama-SEA-LION-v3-8B"
 )
 
 # NOTE: space-separated here (no commas!)
 # TASKS="xnli_en xnli_th xnli_vi xnli_zh xcopa_en xcopa_id xcopa_ta xcopa_th xcopa_vi xcopa_zh xcopa_7b-5shot_id_en xcopa_7b-5shot_ta_en xcopa_7b-5shot_th_en xcopa_7b-5shot_vi_en xcopa_7b-5shot_zh_en xcopa_google_id_en xcopa_google_ta_en xcopa_google_th_en xcopa_google_vi_en xcopa_google_zh_en xnli_7b_5shot_th_en xnli_7b_5shot_vi_en xnli_7b_5shot_zh_en xnli_google_th_en xnli_google_vi_en xnli_google_zh_en paws_en paws_zh"
 TASKS="xnli_en xnli_th xnli_vi xnli_zh xcopa_en xcopa_id xcopa_ta xcopa_th xcopa_vi xcopa_zh paws_en paws_zh"
-# TASKS="xnli_en xcopa_en paws_en xstorycloze_en xwinograd_en xquad_en"
+# TASKS="belebele_ind_Latn belebele_khm_Khmr belebele_lao_Laoo belebele_mya_Mymr belebele_zsm_Latn belebele_tam_Taml belebele_tha_Thai belebele_tgl_Latn belebele_vie_Latn belebele_sun_Latn belebele_ceb_Latn belebele_war_Latn belebele_zho_Hans belebele_ilo_Latn belebele_jav_Latn belebele_sun_Latn belebele_shn_Mymr"
+# TASKS="xquad_en xquad_th xquad_vi xquad_zh"
 
-TYPE="results-260320"
+TYPE="acl_rebuttal/xquad-260217"
 BASE_LOG_DIR="/scratch/e1583535/multilingual-llm-project/logs/eval/lm-evaluation-harness/$TYPE"
 
 mkdir -p "$BASE_LOG_DIR"
@@ -77,7 +85,7 @@ for MODEL in "${MODELS[@]}"; do
       --tasks "$TASKS_CSV" \
       --log_samples \
       --output_path "$OUTPUT_PATH" \
-      --batch_size 16 \
+      --batch_size 8 \
       2>&1 | tee -a "$BASE_LOG_DIR/stdout.$BASE_NAME.log"
 
     if [ $? -eq 0 ]; then

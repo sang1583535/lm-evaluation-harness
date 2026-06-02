@@ -1,0 +1,11 @@
+include: _default_template_yaml
+task: nusax_senti_en_nij
+task_alias: NusaX-Senti Ngaju English Prompt
+dataset_name: nij
+dataset_kwargs:
+  language: nij
+tag:
+  - nusax_senti
+  - nusax_senti_en
+  - sentiment
+  - sea_ood

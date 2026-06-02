@@ -1,0 +1,11 @@
+include: _default_template_yaml
+task: nusax_senti_en_ace
+task_alias: NusaX-Senti Acehnese English Prompt
+dataset_name: ace
+dataset_kwargs:
+  language: ace
+tag:
+  - nusax_senti
+  - nusax_senti_en
+  - sentiment
+  - sea_ood

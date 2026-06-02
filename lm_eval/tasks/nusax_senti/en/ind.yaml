@@ -1,0 +1,11 @@
+include: _default_template_yaml
+task: nusax_senti_en_ind
+task_alias: NusaX-Senti Indonesian English Prompt
+dataset_name: ind
+dataset_kwargs:
+  language: ind
+tag:
+  - nusax_senti
+  - nusax_senti_en
+  - sentiment
+

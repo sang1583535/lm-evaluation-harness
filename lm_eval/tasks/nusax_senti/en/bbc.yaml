@@ -1,0 +1,11 @@
+include: _default_template_yaml
+task: nusax_senti_en_bbc
+task_alias: NusaX-Senti Toba Batak English Prompt
+dataset_name: bbc
+dataset_kwargs:
+  language: bbc
+tag:
+  - nusax_senti
+  - nusax_senti_en
+  - sentiment
+  - sea_ood

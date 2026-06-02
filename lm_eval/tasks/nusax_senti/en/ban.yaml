@@ -1,0 +1,11 @@
+include: _default_template_yaml
+task: nusax_senti_en_ban
+task_alias: NusaX-Senti Balinese English Prompt
+dataset_name: ban
+dataset_kwargs:
+  language: ban
+tag:
+  - nusax_senti
+  - nusax_senti_en
+  - sentiment
+  - sea_ood

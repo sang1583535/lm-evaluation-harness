@@ -5,6 +5,136 @@ import io
 import urllib.request
 
 
+LANGUAGE_NAMES = {
+    "ace": "Acehnese",
+    "ban": "Balinese",
+    "bjn": "Banjarese",
+    "bug": "Buginese",
+    "eng": "English",
+    "ind": "Indonesian",
+    "jav": "Javanese",
+    "mad": "Madurese",
+    "min": "Minangkabau",
+    "nij": "Ngaju",
+    "sun": "Sundanese",
+    "bbc": "Toba Batak",
+}
+
+
+EN_PROMPT = """Classify the sentiment of the following text.
+Choose one of the following options:
+A. negative
+B. neutral
+C. positive
+
+Text: {text}
+Answer:"""
+
+
+OG_PROMPTS = {
+    "eng": EN_PROMPT,
+    "ind": """Tentukan sentimen dari teks berikut.
+Pilih salah satu opsi berikut:
+A. negative
+B. neutral
+C. positive
+
+Teks: {text}
+Jawaban:""",
+    "jav": """Temtokake sentimen saka teks ing ngisor iki.
+Pilih salah siji opsi ing ngisor iki:
+A. negative
+B. neutral
+C. positive
+
+Teks: {text}
+Wangsulan:""",
+    "sun": """Tangtukeun sentimen tina teks ieu.
+Pilih salah sahiji opsi ieu:
+A. negative
+B. neutral
+C. positive
+
+Teks: {text}
+Jawaban:""",
+    "min": """Tantukan sentimen dari teks barikuik.
+Pilih salah ciek opsi barikuik:
+A. negative
+B. neutral
+C. positive
+
+Teks: {text}
+Jawaban:""",
+    # For languages where we are less confident, use Indonesian-like prompt.
+    "ace": """Tentukan sentimen dari teks berikut.
+Pilih salah satu opsi berikut:
+A. negative
+B. neutral
+C. positive
+
+Teks: {text}
+Jawaban:""",
+    "ban": """Tentukan sentimen dari teks berikut.
+Pilih salah satu opsi berikut:
+A. negative
+B. neutral
+C. positive
+
+Teks: {text}
+Jawaban:""",
+    "bjn": """Tentukan sentimen dari teks berikut.
+Pilih salah satu opsi berikut:
+A. negative
+B. neutral
+C. positive
+
+Teks: {text}
+Jawaban:""",
+    "bug": """Tentukan sentimen dari teks berikut.
+Pilih salah satu opsi berikut:
+A. negative
+B. neutral
+C. positive
+
+Teks: {text}
+Jawaban:""",
+    "mad": """Tentukan sentimen dari teks berikut.
+Pilih salah satu opsi berikut:
+A. negative
+B. neutral
+C. positive
+
+Teks: {text}
+Jawaban:""",
+    "nij": """Tentukan sentimen dari teks berikut.
+Pilih salah satu opsi berikut:
+A. negative
+B. neutral
+C. positive
+
+Teks: {text}
+Jawaban:""",
+    "bbc": """Tentukan sentimen dari teks berikut.
+Pilih salah satu opsi berikut:
+A. negative
+B. neutral
+C. positive
+
+Teks: {text}
+Jawaban:""",
+}
+
+
+def doc_to_text_en(doc):
+    return EN_PROMPT.format(text=doc["text"])
+
+
+def doc_to_text_og(doc):
+    lang = doc.get("lang", "ind")
+    prompt = OG_PROMPTS.get(lang, OG_PROMPTS["ind"])
+    return prompt.format(text=doc["text"])
+
+
 # Language code to full name mapping from the original script
 LANGUAGES_MAP = {
     "ace": "acehnese",

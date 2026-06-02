@@ -1,0 +1,11 @@
+include: _default_template_yaml
+task: nusax_senti_en_bug
+task_alias: NusaX-Senti Buginese English Prompt
+dataset_name: bug
+dataset_kwargs:
+  language: bug
+tag:
+  - nusax_senti
+  - nusax_senti_en
+  - sentiment
+  - sea_ood

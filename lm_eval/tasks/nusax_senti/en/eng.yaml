@@ -1,0 +1,11 @@
+include: _default_template_yaml
+task: nusax_senti_en_eng
+task_alias: NusaX-Senti English English Prompt
+dataset_name: eng
+dataset_kwargs:
+  language: eng
+tag:
+  - nusax_senti
+  - nusax_senti_en
+  - sentiment
+

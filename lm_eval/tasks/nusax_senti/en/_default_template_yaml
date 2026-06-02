@@ -1,0 +1,16 @@
+dataset_path: ""
+training_split: train
+validation_split: validation
+test_split: test
+fewshot_split: validation
+custom_dataset: !function lm_eval.tasks.nusax_senti.utils.custom_dataset_loader
+output_type: multiple_choice
+doc_to_text: !function lm_eval.tasks.nusax_senti.utils.doc_to_text_en
+doc_to_choice: ["negative", "neutral", "positive"]
+doc_to_target: "{{label}}"
+metric_list:
+  - metric: acc
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 1.0
